@@ -19,7 +19,7 @@ If you have already have an `eas.json` file in your project, you'll need to upda
 
 <Tab >
 
-`expo-dev-client` does not modify your application's behavior in a build you would submit to the Play Store or App Store, so you must specify `developmentClient: true` to create a custom development client.
+`expo-dev-client` does not modify your application's behavior in a build you would submit to the Play Store or App Store, so you must specify `"developmentClient": true` to create a custom development client.
 To share the build with your internal team, use [`internal` distribution](/build/internal-distribution.md).
 
 An example configuration would look like this:
