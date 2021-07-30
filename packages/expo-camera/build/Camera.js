@@ -1,4 +1,5 @@
 import { Platform, UnavailabilityError } from '@unimodules/core';
+import { createPermissionHook } from 'expo-modules-core';
 import * as React from 'react';
 import { findNodeHandle } from 'react-native';
 import { PermissionStatus, } from './Camera.types';
@@ -103,9 +104,15 @@ export default class Camera extends React.Component {
         }
         return await CameraManager.getAvailableVideoCodecsAsync();
     }
+    /**
+     * @deprecated use `getCameraPermissionsAync` instead.
+     */
     static async getPermissionsAsync() {
         return CameraManager.getPermissionsAsync();
     }
+    /**
+     * @deprecated use `requestCameraPermissionsAync` instead.
+     */
     static async requestPermissionsAsync() {
         return CameraManager.requestPermissionsAsync();
     }
@@ -192,6 +199,34 @@ Camera.defaultProps = {
     flashMode: CameraManager.FlashMode.off,
     whiteBalance: CameraManager.WhiteBalance.auto,
 };
+// @needsAudit
+/**
+ * Check or request permissions to access the camera.
+ * This uses both `requestCameraPermissionsAsync` and `getCameraPermissionsAsync` to interact with the permissions.
+ *
+ * @example
+ * ```ts
+ * const [status, requestPermission] = Camera.useCameraPermissions();
+ * ```
+ */
+Camera.useCameraPermissions = createPermissionHook({
+    getMethod: Camera.getCameraPermissionsAsync,
+    requestMethod: Camera.requestCameraPermissionsAsync,
+});
+// @needsAudit
+/**
+ * Check or request permissions to access the microphone.
+ * This uses both `requestMicrophonePermissionsAsync` and `getMicrophonePermissionsAsync` to interact with the permissions.
+ *
+ * @example
+ * ```ts
+ * const [status, requestPermission] = Camera.useMicrophonePermissions();
+ * ```
+ */
+Camera.useMicrophonePermissions = createPermissionHook({
+    getMethod: Camera.getMicrophonePermissionsAsync,
+    requestMethod: Camera.requestMicrophonePermissionsAsync,
+});
 export const { Constants, getPermissionsAsync, requestPermissionsAsync, getCameraPermissionsAsync, requestCameraPermissionsAsync, getMicrophonePermissionsAsync, requestMicrophonePermissionsAsync, } = Camera;
 export { PermissionStatus, };
 //# sourceMappingURL=Camera.js.map
